@@ -54,28 +54,21 @@ task-manager/
   components/
     AddTask.tsx           # Input + Add button
     TaskItem.tsx          # Task row (toggle + delete)
-  screenshots/            # Screenshots used in README
+screenshots/
+  task0.png               # Empty state (0 tasks)
+  home-with-tasks.png     # List state (2 tasks)
 ```
 
 ## Screenshots
 
-Place your screenshots inside the `screenshots/` folder and update/keep the names below.
+Two states are shown below:
 
-Recommended filenames:
-
-- `screenshots/home-empty.png`
-- `screenshots/home-with-tasks.png`
-- `screenshots/completed-task.png`
-
-Preview (after you add images):
+- **0 tasks (empty state)**
+- **2 tasks (list state)**
 
 | Empty State | Task List |
 | --- | --- |
-| ![Empty State](./screenshots/home-empty.png) | ![Task List](./screenshots/home-with-tasks.png) |
-
-| Completed Visual |
-| --- |
-| ![Completed Task](./screenshots/completed-task.png) |
+| ![Empty State (0 tasks)](./screenshots/task0.png) | ![Task List (2 tasks)](./screenshots/home-with-tasks.png) |
 
 ## Notes
 
