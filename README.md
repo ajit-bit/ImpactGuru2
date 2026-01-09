@@ -54,9 +54,7 @@ task-manager/
   components/
     AddTask.tsx           # Input + Add button
     TaskItem.tsx          # Task row (toggle + delete)
-screenshots/
-  task0.png               # Empty state (0 tasks)
-  home-with-tasks.png     # List state (2 tasks)
+screenshots/              # Screenshots used in README
 ```
 
 ## Screenshots
@@ -73,4 +71,4 @@ Two states are shown below:
 ## Notes
 
 - This app uses **local state only** (no backend).
-- If you want persistence, you can add AsyncStorage and save/load tasks on app start.
+- Tasks are persisted locally using **AsyncStorage**.

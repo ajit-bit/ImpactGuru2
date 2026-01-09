@@ -1,10 +1,68 @@
 import { View, Text, FlatList, StyleSheet, StatusBar, Platform } from "react-native";
-import { useMemo, useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useEffect, useMemo, useState } from "react";
 import AddTask from "../../components/AddTask";
 import TaskItem, { type Task } from "../../components/TaskItem";
 
+const STORAGE_KEY = "TASK_MANAGER_TASKS_V1";
+
 export default function HomeScreen() {
   const [tasks, setTasks] = useState<Task[]>([]);
+  const [isHydrated, setIsHydrated] = useState(false);
+
+  useEffect(() => {
+    let cancelled = false;
+
+    const hydrate = async () => {
+      try {
+        const raw = await AsyncStorage.getItem(STORAGE_KEY);
+        if (cancelled) return;
+
+        if (!raw) {
+          setIsHydrated(true);
+          return;
+        }
+
+        const parsed = JSON.parse(raw) as unknown;
+        if (Array.isArray(parsed)) {
+          const cleaned: Task[] = parsed
+            .filter((t) => t && typeof t === "object")
+            .map((t: any) => ({
+              id: String(t.id),
+              title: typeof t.title === "string" ? t.title : "",
+              completed: Boolean(t.completed),
+            }))
+            .filter((t) => t.title.length > 0);
+
+          setTasks(cleaned);
+        }
+
+        setIsHydrated(true);
+      } catch {
+        setIsHydrated(true);
+      }
+    };
+
+    hydrate();
+
+    return () => {
+      cancelled = true;
+    };
+  }, []);
+
+  useEffect(() => {
+    if (!isHydrated) return;
+
+    const persist = async () => {
+      try {
+        await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
+      } catch {
+        // ignore write errors
+      }
+    };
+
+    persist();
+  }, [isHydrated, tasks]);
 
   const counts = useMemo(() => {
     const total = tasks.length;
